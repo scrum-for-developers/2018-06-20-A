@@ -21,6 +21,8 @@
 			Year:<input type="text" th:field="*{yearOfPublication}" />
 		<span class="error" th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}"></span>
 		<br />
+		<span class="error" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
+		<br />
 		<input type="submit" id="addBook" value="Add Book" />
 		<hr/>
 		<a th:href="@{/}">Back to Home</a>
