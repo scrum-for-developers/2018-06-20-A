@@ -28,7 +28,7 @@ docker run --detach \
 ```
 3. Run the application. In the directory `worblehat-web`:
   * Either run `mvn spring-boot:run`
-  * Or start as plain Java main class: `de.codecentric.Application`
+  * Or start as plain Java main class: `de.codecentric.psd.Worblehat`
 4. Access the application at <http://localhost:8080/worblehat/>
 
 ## Running acceptance tests
