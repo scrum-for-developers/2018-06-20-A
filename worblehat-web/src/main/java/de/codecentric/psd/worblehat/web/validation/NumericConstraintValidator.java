@@ -9,6 +9,7 @@ public class NumericConstraintValidator implements ConstraintValidator<Numeric, 
 
 	@Override
 	public void initialize(Numeric constraintAnnotation) {
+		// Do nothing because there is nothing to do
 	}
 
 	@Override

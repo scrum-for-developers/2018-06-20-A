@@ -38,7 +38,7 @@ public class BookDataFormData {
 	}
 
 	public void setYearOfPublication(final String yearOfPublication) {
-		this.yearOfPublication = yearOfPublication;
+		this.yearOfPublication = yearOfPublication.trim();
 	}
 
 	public String getIsbn() {
@@ -46,7 +46,7 @@ public class BookDataFormData {
 	}
 
 	public void setIsbn(final String isbn) {
-		this.isbn = isbn;
+		this.isbn = isbn.trim();
 	}
 
 	public String getAuthor() {
@@ -54,7 +54,7 @@ public class BookDataFormData {
 	}
 
 	public void setAuthor(final String author) {
-		this.author = author;
+		this.author = author.trim();
 	}
 
 	public String getTitle() {
@@ -62,7 +62,7 @@ public class BookDataFormData {
 	}
 
 	public void setTitle(final String title) {
-		this.title = title;
+		this.title = title.trim();
 	}
 
 	public String getEdition() {
@@ -70,7 +70,7 @@ public class BookDataFormData {
 	}
 
 	public void setEdition(final String edition) {
-		this.edition = edition;
+		this.edition = edition.trim();
 	}
 
 	public String getDescription() {
@@ -78,7 +78,7 @@ public class BookDataFormData {
 	}
 
 	public void setDescription(final String description) {
-		this.description = description;
+		this.description = description.trim();
 	}
 
 	@Override

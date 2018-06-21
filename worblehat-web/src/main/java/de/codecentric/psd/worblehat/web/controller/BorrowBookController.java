@@ -29,6 +29,7 @@ import java.util.Set;
 @Controller
 public class BorrowBookController {
 
+	private static final String BORROW = "borrow";
 	private BookService bookService;
 
 	@Autowired
@@ -46,12 +47,12 @@ public class BorrowBookController {
 	public String processSubmit(@ModelAttribute("borrowFormData") @Valid BookBorrowFormData borrowFormData,
 			BindingResult result) {
 		if (result.hasErrors()) {
-			return "borrow";
+			return BORROW;
 		}
 		Set<Book> books = bookService.findBooksByIsbn(borrowFormData.getIsbn());
 		if(books.isEmpty()) {
 			result.rejectValue("isbn", "noBookExists");
-			return "borrow";
+			return BORROW;
 		}
 		Optional<Borrowing> borrowing = bookService.borrowBook(borrowFormData.getIsbn(), borrowFormData.getEmail());
 
@@ -59,7 +60,7 @@ public class BorrowBookController {
 				.map(b -> "home")
 				.orElseGet( () -> {
 					result.rejectValue("isbn", "noBorrowableBooks");
-					return "borrow";
+					return BORROW;
 				});
 	}
 
