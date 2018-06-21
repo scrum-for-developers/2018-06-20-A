@@ -24,5 +24,12 @@
 				Return all borrowed books by one member.
 			</action>
 		</release>
+		
+		<release version="1.2" date="2018-06-21"
+			description="We can devliver software as a team.">
+			<action dev="MDD" type="update">
+				Change error messages.
+			</action>
+		</release>
 	</body>
 </document>
