@@ -1,5 +1,6 @@
 package de.codecentric.psd.worblehat.domain;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +31,28 @@ public class StandardBookService implements BookService {
 
 	private BookRepository bookRepository;
 
+	public List<Borrowing> getBorrowingsByBorrower (String borrowerEmailAddress) {
+		return borrowingRepository
+				.findBorrowingsByBorrower(borrowerEmailAddress);
+	}
+	
 	@Override
 	public void returnAllBooksByBorrower(String borrowerEmailAddress) {
 		List<Borrowing> borrowingsByUser = borrowingRepository
 				.findBorrowingsByBorrower(borrowerEmailAddress);
 		for (Borrowing borrowing : borrowingsByUser) {
 			borrowingRepository.delete(borrowing);
+		}
+	}
+	
+	@Override
+	public void returnOneBookByBorrower(String borrowerEmailAddress, String isbn) {
+		List<Borrowing> borrowingsByUser = borrowingRepository
+				.findBorrowingsByBorrower(borrowerEmailAddress);
+		for (Borrowing borrowing : borrowingsByUser) {
+			if (StringUtils.equals(borrowing.getBorrowedBook().getIsbn(), isbn)) {
+				borrowingRepository.delete(borrowing);
+			}
 		}
 	}
 

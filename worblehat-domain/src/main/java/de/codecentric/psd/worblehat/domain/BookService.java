@@ -10,8 +10,12 @@ import java.util.Set;
  */
 public interface BookService {
 
+	public List<Borrowing> getBorrowingsByBorrower (String borrowerEmailAddress);
+	
 	void returnAllBooksByBorrower(String string);
 
+	void returnOneBookByBorrower(String borrowerEmailAddress, String isbn);
+	
 	Optional<Borrowing> borrowBook(String isbn, String borrower);
 
 	Set<Book> findBooksByIsbn(String isbn);
