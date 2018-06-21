@@ -30,6 +30,9 @@
 			<action dev="MDD" type="update">
 				Change error messages.
 			</action>
+			<action dev="MDD" type="update">
+				New spring bot version 1.5.13.RELEASE
+			</action>
 		</release>
 	</body>
 </document>
