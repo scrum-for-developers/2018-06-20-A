@@ -46,6 +46,9 @@
 			<action dev="MDD" type="update">
 				Remove leading and trailing blanks from string input fields.
 			</action>
+			<action dev="MDD" type="update">
+				Insert 13 digit ISBN.
+			</action>
 		</release>
 	</body>
 </document>
