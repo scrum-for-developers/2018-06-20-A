@@ -43,6 +43,9 @@
 			<action dev="MDD" type="update">
 				Add description to book.
 			</action>
+			<action dev="MDD" type="update">
+				Insert 13 digit ISBN.
+			</action>
 		</release>
 		<release version="1.3" date="2018-06-21"
 			description="More book details.">
