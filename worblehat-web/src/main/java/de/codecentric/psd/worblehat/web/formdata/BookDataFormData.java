@@ -1,9 +1,10 @@
 package de.codecentric.psd.worblehat.web.formdata;
 
-import de.codecentric.psd.worblehat.web.validation.ISBN;
-import de.codecentric.psd.worblehat.web.validation.Numeric;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import de.codecentric.psd.worblehat.web.validation.ISBN;
+import de.codecentric.psd.worblehat.web.validation.Numeric;
 
 /**
  * This class represent the form data of the add book form.
@@ -29,51 +30,62 @@ public class BookDataFormData {
 	@NotEmpty(message = "{empty.bookDataFormData.author}")
 	private String author;
 
+	@NotEmpty(message = "{empty.bookDataFormData.description}")
+	private String description;
+
 	public String getYearOfPublication() {
-		return yearOfPublication;
+		return this.yearOfPublication;
 	}
 
-	public void setYearOfPublication(String yearOfPublication) {
+	public void setYearOfPublication(final String yearOfPublication) {
 		this.yearOfPublication = yearOfPublication;
 	}
 
 	public String getIsbn() {
-		return isbn;
+		return this.isbn;
 	}
 
-	public void setIsbn(String isbn) {
+	public void setIsbn(final String isbn) {
 		this.isbn = isbn;
 	}
 
 	public String getAuthor() {
-		return author;
+		return this.author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(final String author) {
 		this.author = author;
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
 	public String getEdition() {
-		return edition;
+		return this.edition;
 	}
 
-	public void setEdition(String edition) {
+	public void setEdition(final String edition) {
 		this.edition = edition;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
 	@Override
 	public String toString() {
-		return "BookDataFormData [title=" + title + ", edition=" + edition
-				+ ", yearOfPublication=" + yearOfPublication + ", isbn=" + isbn + ", author=" + author
-				+ "]";
+		return "BookDataFormData [title=" + this.title + ", edition=" + this.edition + ", yearOfPublication="
+				+ this.yearOfPublication + ", isbn=" + this.isbn + ", author=" + this.author + ", description="
+				+ this.description + "]";
 	}
 
 }
