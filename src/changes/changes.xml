@@ -34,7 +34,7 @@
 				New spring bot version 1.5.13.RELEASE
 			</action>
 			<action dev="MDD" type="update">
-				Display of version in home view.
+				Display of version in all views.
 			</action>
 		</release>
 	</body>
