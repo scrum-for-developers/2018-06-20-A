@@ -54,17 +54,15 @@ public class Book implements Serializable {
 	 * @param yearOfPublication
 	 *            the yearOfPublication
 	 */
-	public Book(@Nonnull String title,
-				@Nonnull String author,
-				@Nonnull String edition,
-				@Nonnull String isbn,
-				int yearOfPublication) {
+	public Book(@Nonnull final String title, @Nonnull final String author, @Nonnull final String edition,
+			@Nonnull final String isbn, final int yearOfPublication, @Nonnull final String description) {
 		super();
 		this.title = title;
 		this.author = author;
 		this.edition = edition;
 		this.isbn = isbn;
 		this.yearOfPublication = yearOfPublication;
+		this.description = description;
 	}
 
 	public String getTitle() {
@@ -87,57 +85,52 @@ public class Book implements Serializable {
 		return this.yearOfPublication;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(final String author) {
 		this.author = author;
 	}
-	
-	
+
 	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public void setEdition(String edition) {
+	public void setEdition(final String edition) {
 		this.edition = edition;
 	}
 
-	public void setIsbn(String isbn) {
+	public void setIsbn(final String isbn) {
 		this.isbn = isbn;
 	}
 
-	public void setYearOfPublication(int yearOfPublication) {
+	public void setYearOfPublication(final int yearOfPublication) {
 		this.yearOfPublication = yearOfPublication;
 	}
 
-    public Borrowing getBorrowing() {
+	public Borrowing getBorrowing() {
 		return this.borrowing;
 	}
 
-	boolean isSameCopy(@Nonnull Book book) {
+	boolean isSameCopy(@Nonnull final Book book) {
 		return this.getTitle().equals(book.title) && this.getAuthor().equals(book.author);
 	}
 
-	public void borrowNowByBorrower(String borrowerEmailAddress) {
+	public void borrowNowByBorrower(final String borrowerEmailAddress) {
 		if (this.borrowing == null) {
-            this.borrowing = new Borrowing(this, borrowerEmailAddress);
-        }
+			this.borrowing = new Borrowing(this, borrowerEmailAddress);
+		}
 	}
 
 	@Override
 	public String toString() {
-		return "Book{" +
-				"title='" + this.title + '\'' +
-				", author='" + this.author + '\'' +
-				", edition='" + this.edition + '\'' +
-				", isbn='" + this.isbn + '\'' +
-				", yearOfPublication=" + this.yearOfPublication +
-				'}';
+		return "Book{" + "title='" + this.title + '\'' + ", author='" + this.author + '\'' + ", edition='"
+				+ this.edition + '\'' + ", isbn='" + this.isbn + '\'' + ", yearOfPublication=" + this.yearOfPublication
+				+ '}';
 	}
 }

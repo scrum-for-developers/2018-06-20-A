@@ -33,7 +33,7 @@ public class InsertBookControllerTest {
 
     private BindingResult bindingResult;
 
-    private static final Book TEST_BOOK = new Book("title", "author", "edition", "isbn", 2016);
+    private static final Book TEST_BOOK = new Book("title", "author", "edition", "isbn", 2016, "test");
 
     @Before
     public void setUp() {
@@ -65,7 +65,7 @@ public class InsertBookControllerTest {
     public void shouldCreateNewCopyOfExistingBook() {
         setupFormData();
         when(bookService.bookExists(TEST_BOOK.getIsbn())).thenReturn(true);
-        when(bookService.createBook(any(), any(), any(), any(), anyInt())).thenReturn(Optional.of(TEST_BOOK));
+        when(bookService.createBook(any(), any(), any(), any(), anyInt(), any())).thenReturn(Optional.of(TEST_BOOK));
 
         String navigateTo = insertBookController.processSubmit(bookDataFormData, bindingResult);
 
@@ -77,7 +77,7 @@ public class InsertBookControllerTest {
     public void shouldCreateBookAndNavigateToBookList() {
         setupFormData();
         when(bookService.bookExists(TEST_BOOK.getIsbn())).thenReturn(false);
-        when(bookService.createBook(any(), any(), any(), any(), anyInt())).thenReturn(Optional.of(TEST_BOOK));
+        when(bookService.createBook(any(), any(), any(), any(), anyInt(), any())).thenReturn(Optional.of(TEST_BOOK));
 
         String navigateTo = insertBookController.processSubmit(bookDataFormData, bindingResult);
 
@@ -87,7 +87,7 @@ public class InsertBookControllerTest {
 
     private void verifyBookIsCreated() {
         verify(bookService).createBook(TEST_BOOK.getTitle(), TEST_BOOK.getAuthor(),
-                TEST_BOOK.getEdition(), TEST_BOOK.getIsbn(), TEST_BOOK.getYearOfPublication());
+                TEST_BOOK.getEdition(), TEST_BOOK.getIsbn(), TEST_BOOK.getYearOfPublication(), TEST_BOOK.getDescription());
     }
 
     private void setupFormData() {
@@ -96,5 +96,6 @@ public class InsertBookControllerTest {
         bookDataFormData.setEdition(TEST_BOOK.getEdition());
         bookDataFormData.setIsbn(TEST_BOOK.getIsbn());
         bookDataFormData.setYearOfPublication(String.valueOf(TEST_BOOK.getYearOfPublication()));
+        bookDataFormData.setDescription(TEST_BOOK.getDescription());
     }
 }

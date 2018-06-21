@@ -31,7 +31,7 @@
 				Change error messages.
 			</action>
 			<action dev="MDD" type="update">
-				New spring bot version 1.5.13.RELEASE
+				New spring boot version 1.5.13.RELEASE
 			</action>
 			<action dev="MDD" type="update">
 				Display of version in all views.
@@ -40,6 +40,9 @@
 		
 		<release version="1.3" date="2018-06-21"
 			description="More book details">
+			<action dev="MDD" type="update">
+				Add description to book.
+			</action>						
 			<action dev="MDD" type="update">
 				Remove leading and trailing blanks from string input fields.
 			</action>

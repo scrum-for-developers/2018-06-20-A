@@ -13,6 +13,7 @@
 			<th>Edition</th>
 			<th>ISBN</th>
 			<th>Borrower</th>
+			<th>Description</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -23,6 +24,7 @@
 			<td th:text="${book.edition}">1st</td>
 			<td th:text="${book.isbn}">123456</td>
 			<td th:text="${book?.borrowing?.borrowerEmailAddress}">someone@codecentric.de</td>
+			<td th:text="${book.description}">That`s a nice book.</td>
 		</tr>
 	</tbody>
 	</table>
