@@ -36,6 +36,9 @@
 			<action dev="MDD" type="update">
 				Add description to book.
 			</action>
+			<action dev="MDD" type="update">
+				Add description to book.
+			</action>
 		</release>
 	</body>
 </document>
