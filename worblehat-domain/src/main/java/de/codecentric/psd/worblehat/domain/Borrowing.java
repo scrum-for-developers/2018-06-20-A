@@ -1,19 +1,10 @@
 package de.codecentric.psd.worblehat.domain;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.joda.time.DateTime;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Borrowing Entity
@@ -35,22 +26,26 @@ public class Borrowing implements Serializable {
 	@OneToOne()
 	private Book borrowedBook;
 
+	public String getBorrowerEmailAddress() {
+		return borrowerEmailAddress;
+	}
+
 	/**
 	 * @param book
-	 *            The borrowed book
+	 * The borrowed book
 	 * @param borrowerEmailAddress
-	 *            The borrowers e-mail Address
+	 * The borrowers e-mail Address
 	 * @param borrowDate
-	 *            The borrow date
-	 */
-	public Borrowing(final Book book, final String borrowerEmailAddress, final DateTime borrowDate) {
+	 * The borrow date
+     */
+	public Borrowing(Book book, String borrowerEmailAddress, DateTime borrowDate) {
 		super();
 		this.borrowedBook = book;
 		this.borrowerEmailAddress = borrowerEmailAddress;
 		this.borrowDate = borrowDate.toDate();
 	}
 
-	public Borrowing(final Book book, final String borrowerEmailAddress) {
+	public Borrowing(Book book, String borrowerEmailAddress) {
 		this(book, borrowerEmailAddress, DateTime.now());
 	}
 
@@ -59,20 +54,6 @@ public class Borrowing implements Serializable {
 	}
 
 	public Book getBorrowedBook() {
-		return this.borrowedBook;
-	}
-
-	public String getBorrowerEmailAddress() {
-		return this.borrowerEmailAddress;
-	}
-
-	public Date getBorrowDate() {
-		return this.borrowDate;
-	}
-
-	public Date getReturnDate() {
-		Instant tempDate = this.borrowDate.toInstant();
-		tempDate.plus(3, ChronoUnit.WEEKS);
-		return Date.from(tempDate);
+		return borrowedBook;
 	}
 }
