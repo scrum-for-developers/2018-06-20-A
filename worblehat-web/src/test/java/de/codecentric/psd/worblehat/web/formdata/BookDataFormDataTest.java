@@ -106,4 +106,28 @@ public class BookDataFormDataTest {
 		assertThat(formData.getTitle(), is(TEST_STRING));
 	}
 
+	@Test
+	public void testDescriptionWithLeadingBlanks() {
+		final BookDataFormData formData = new BookDataFormData();
+
+		formData.setDescription(BLANK + TEST_STRING);
+		assertThat(formData.getDescription(), is(TEST_STRING));
+	}
+
+	@Test
+	public void testDescriptionWithTrailingBlanks() {
+		final BookDataFormData formData = new BookDataFormData();
+
+		formData.setDescription(TEST_STRING + BLANK);
+		assertThat(formData.getDescription(), is(TEST_STRING));
+	}
+
+	@Test
+	public void testDescriptionWithLeadingAndTrailingBlanks() {
+		final BookDataFormData formData = new BookDataFormData();
+
+		formData.setDescription(BLANK + TEST_STRING + BLANK);
+		assertThat(formData.getDescription(), is(TEST_STRING));
+	}
+
 }
