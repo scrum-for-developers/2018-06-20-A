@@ -34,7 +34,7 @@
 				New spring bot version 1.5.13.RELEASE
 			</action>
 			<action dev="MDD" type="update">
-				Add description to book.
+				Display of version in all views.
 			</action>
 			<action dev="MDD" type="update">
 				Add description to book.
