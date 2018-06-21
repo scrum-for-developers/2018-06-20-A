@@ -1,19 +1,32 @@
 package de.codecentric.psd.worblehat.domain;
 
-import java.util.*;
+import static com.github.npathai.hamcrestopt.OptionalMatchers.isEmpty;
+import static org.hamcrest.CoreMatchers.either;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import static com.github.npathai.hamcrestopt.OptionalMatchers.isEmpty;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
 
 public class StandardBookServiceTest {
 
@@ -34,170 +47,171 @@ public class StandardBookServiceTest {
 
 	@Before
 	public void setup() {
-		aBook = new Book("title", "author", "edition", "isbn", 2016, "test");
-		aCopyofBook = new Book("title", "author", "edition", "isbn", 2016, "test");
-		anotherBook = new Book("title2", "author2", "edition2", "isbn2", 2016, "test");
+		this.aBook = new Book("title", "author", "edition", "isbn", 2016, "test");
+		this.aCopyofBook = new Book("title", "author", "edition", "isbn", 2016, "test");
+		this.anotherBook = new Book("title2", "author2", "edition2", "isbn2", 2016, "test");
 
-		aBorrowedBook = new Book("title", "author", "edition", "isbn", 2016, "test");
-		aBorrowing = new Borrowing(aBorrowedBook, BORROWER_EMAIL, NOW);
-		aBorrowedBook.borrowNowByBorrower(BORROWER_EMAIL);
+		this.aBorrowedBook = new Book("title", "author", "edition", "isbn", 2016, "test");
+		this.aBorrowing = new Borrowing(this.aBorrowedBook, BORROWER_EMAIL, NOW);
+		this.aBorrowedBook.borrowNowByBorrower(BORROWER_EMAIL);
 
-		aCopyofBorrowedBook = new Book("title", "author", "edition", "isbn", 2016, "test");
-		aBorrowingOfCopy = new Borrowing(aCopyofBorrowedBook, BORROWER_EMAIL, NOW);
-		aCopyofBorrowedBook.borrowNowByBorrower(BORROWER_EMAIL);
+		this.aCopyofBorrowedBook = new Book("title", "author", "edition", "isbn", 2016, "test");
+		this.aBorrowingOfCopy = new Borrowing(this.aCopyofBorrowedBook, BORROWER_EMAIL, NOW);
+		this.aCopyofBorrowedBook.borrowNowByBorrower(BORROWER_EMAIL);
 
-		anotherBorrowedBook = new Book("title2", "author2", "edition2", "isbn2", 2016, "test");
-		anotherBorrowing = new Borrowing(anotherBorrowedBook, BORROWER_EMAIL, NOW);
-		anotherBorrowedBook.borrowNowByBorrower(BORROWER_EMAIL);
+		this.anotherBorrowedBook = new Book("title2", "author2", "edition2", "isbn2", 2016, "test");
+		this.anotherBorrowing = new Borrowing(this.anotherBorrowedBook, BORROWER_EMAIL, NOW);
+		this.anotherBorrowedBook.borrowNowByBorrower(BORROWER_EMAIL);
 
-		bookRepository = mock(BookRepository.class);
+		this.bookRepository = mock(BookRepository.class);
 
-		borrowingRepository = mock(BorrowingRepository.class);
-		when(borrowingRepository.findBorrowingsByBorrower(BORROWER_EMAIL))
-				.thenReturn(Arrays.asList(aBorrowing, anotherBorrowing));
+		this.borrowingRepository = mock(BorrowingRepository.class);
+		when(this.borrowingRepository.findBorrowingsByBorrower(BORROWER_EMAIL))
+				.thenReturn(Arrays.asList(this.aBorrowing, this.anotherBorrowing));
 
-		when(borrowingRepository.findBorrowingForBook(aBook)).thenReturn(null);
+		when(this.borrowingRepository.findBorrowingForBook(this.aBook)).thenReturn(null);
 
-		bookService = new StandardBookService(borrowingRepository, bookRepository);
+		this.bookService = new StandardBookService(this.borrowingRepository, this.bookRepository);
 
 	}
 
-	private void givenALibraryWith(Book... books) {
+	private void givenALibraryWith(final Book... books) {
 		Map<String, Set<Book>> bookCopies = new HashMap<>();
-		for (Book book : books
-				) {
+		for (Book book : books) {
 			if (!bookCopies.containsKey(book.getIsbn())) {
 				bookCopies.put(book.getIsbn(), new HashSet<>());
 			}
 			bookCopies.get(book.getIsbn()).add(book);
 		}
 		for (Map.Entry<String, Set<Book>> entry : bookCopies.entrySet()) {
-			when(bookRepository.findByIsbn(entry.getKey())).thenReturn(entry.getValue());
-			when(bookRepository.findTopByIsbn(entry.getKey())).thenReturn(Optional.of(entry.getValue().iterator().next()));
+			when(this.bookRepository.findByIsbn(entry.getKey())).thenReturn(entry.getValue());
+			when(this.bookRepository.findTopByIsbn(entry.getKey()))
+					.thenReturn(Optional.of(entry.getValue().iterator().next()));
 		}
 	}
 
 	@Test
 	public void shouldReturnAllBooksOfOnePerson() {
-		bookService.returnAllBooksByBorrower(BORROWER_EMAIL);
-		verify(borrowingRepository).delete(anotherBorrowing);
+		this.bookService.returnAllBooksByBorrower(BORROWER_EMAIL);
+		verify(this.borrowingRepository).delete(this.anotherBorrowing);
 	}
 
 	@Test
 	public void shouldSaveBorrowingWithBorrowerEmail() {
-		givenALibraryWith(aBook);
+		this.givenALibraryWith(this.aBook);
 		ArgumentCaptor<Borrowing> borrowingArgumentCaptor = ArgumentCaptor.forClass(Borrowing.class);
-		bookService.borrowBook(aBook.getIsbn(), BORROWER_EMAIL);
-		verify(borrowingRepository).save(borrowingArgumentCaptor.capture());
+		this.bookService.borrowBook(this.aBook.getIsbn(), BORROWER_EMAIL);
+		verify(this.borrowingRepository).save(borrowingArgumentCaptor.capture());
 		assertThat(borrowingArgumentCaptor.getValue().getBorrowerEmailAddress(), equalTo(BORROWER_EMAIL));
 	}
 
 	@Test()
 	public void shouldNotBorrowWhenBookAlreadyBorrowed() {
-		givenALibraryWith(aBorrowedBook);
-		Optional<Borrowing> borrowing = bookService.borrowBook(aBorrowedBook.getIsbn(), BORROWER_EMAIL);
+		this.givenALibraryWith(this.aBorrowedBook);
+		Optional<Borrowing> borrowing = this.bookService.borrowBook(this.aBorrowedBook.getIsbn(), BORROWER_EMAIL);
 		assertTrue(!borrowing.isPresent());
 	}
 
 	@Test
 	public void shouldSelectOneOfTwoBooksWhenBothAreNotBorrowed() {
-		givenALibraryWith(aBook, aCopyofBook);
+		this.givenALibraryWith(this.aBook, this.aCopyofBook);
 		ArgumentCaptor<Borrowing> borrowingArgumentCaptor = ArgumentCaptor.forClass(Borrowing.class);
-		bookService.borrowBook(aBook.getIsbn(), BORROWER_EMAIL);
-		verify(borrowingRepository).save(borrowingArgumentCaptor.capture());
+		this.bookService.borrowBook(this.aBook.getIsbn(), BORROWER_EMAIL);
+		verify(this.borrowingRepository).save(borrowingArgumentCaptor.capture());
 		assertThat(borrowingArgumentCaptor.getValue().getBorrowerEmailAddress(), is(BORROWER_EMAIL));
-		assertThat(borrowingArgumentCaptor.getValue().getBorrowedBook(), either(is(aBook)).or(is(aCopyofBook)));
+		assertThat(borrowingArgumentCaptor.getValue().getBorrowedBook(),
+				either(is(this.aBook)).or(is(this.aCopyofBook)));
 	}
 
 	@Test
 	public void shouldSelectUnborrowedOfTwoBooksWhenOneIsBorrowed() {
-		givenALibraryWith(aBook, aBorrowedBook);
+		this.givenALibraryWith(this.aBook, this.aBorrowedBook);
 		ArgumentCaptor<Borrowing> borrowingArgumentCaptor = ArgumentCaptor.forClass(Borrowing.class);
-		bookService.borrowBook(aBook.getIsbn(), BORROWER_EMAIL);
-		verify(borrowingRepository).save(borrowingArgumentCaptor.capture());
+		this.bookService.borrowBook(this.aBook.getIsbn(), BORROWER_EMAIL);
+		verify(this.borrowingRepository).save(borrowingArgumentCaptor.capture());
 		assertThat(borrowingArgumentCaptor.getValue().getBorrowerEmailAddress(), is(BORROWER_EMAIL));
-		assertThat(borrowingArgumentCaptor.getValue().getBorrowedBook(), is(aBook));
+		assertThat(borrowingArgumentCaptor.getValue().getBorrowedBook(), is(this.aBook));
 	}
 
 	@Test
 	public void shouldThrowExceptionWhenAllBooksAreBorrowedRightNow() {
-		givenALibraryWith(aBorrowedBook, aCopyofBorrowedBook);
+		this.givenALibraryWith(this.aBorrowedBook, this.aCopyofBorrowedBook);
 		ArgumentCaptor<Borrowing> borrowingArgumentCaptor = ArgumentCaptor.forClass(Borrowing.class);
-		Optional<Borrowing> borrowing = bookService.borrowBook(aBorrowedBook.getIsbn(), BORROWER_EMAIL);
+		Optional<Borrowing> borrowing = this.bookService.borrowBook(this.aBorrowedBook.getIsbn(), BORROWER_EMAIL);
 		assertThat(borrowing, isEmpty());
-		verify(borrowingRepository, never()).save(any(Borrowing.class));
+		verify(this.borrowingRepository, never()).save(any(Borrowing.class));
 	}
 
 	@Test
 	public void shouldCreateBook() {
-		when(bookRepository.save(any(Book.class))).thenReturn(aBook);
-		bookService.createBook(aBook.getTitle(), aBook.getAuthor(), aBook.getEdition(),
-				aBook.getIsbn(), aBook.getYearOfPublication(), aBook.getDescription());
+		when(this.bookRepository.save(any(Book.class))).thenReturn(this.aBook);
+		this.bookService.createBook(this.aBook.getTitle(), this.aBook.getAuthor(), this.aBook.getEdition(),
+				this.aBook.getIsbn(), this.aBook.getYearOfPublication(), this.aBook.getDescription());
 
 		// assert that book was saved to repository
 		ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
-		verify(bookRepository).save(bookArgumentCaptor.capture());
+		verify(this.bookRepository).save(bookArgumentCaptor.capture());
 
 		// assert that the information was passed correctly to create the book
-		assertThat(bookArgumentCaptor.getValue().getTitle(), is(aBook.getTitle()));
-		assertThat(bookArgumentCaptor.getValue().getAuthor(), is(aBook.getAuthor()));
-		assertThat(bookArgumentCaptor.getValue().getEdition(), is(aBook.getEdition()));
-		assertThat(bookArgumentCaptor.getValue().getIsbn(), is(aBook.getIsbn()));
-		assertThat(bookArgumentCaptor.getValue().getYearOfPublication(), is(aBook.getYearOfPublication()));
-		assertThat(bookArgumentCaptor.getValue().getDescription(), is(aBook.getDescription()));
+		assertThat(bookArgumentCaptor.getValue().getTitle(), is(this.aBook.getTitle()));
+		assertThat(bookArgumentCaptor.getValue().getAuthor(), is(this.aBook.getAuthor()));
+		assertThat(bookArgumentCaptor.getValue().getEdition(), is(this.aBook.getEdition()));
+		assertThat(bookArgumentCaptor.getValue().getIsbn(), is(this.aBook.getIsbn()));
+		assertThat(bookArgumentCaptor.getValue().getYearOfPublication(), is(this.aBook.getYearOfPublication()));
+		assertThat(bookArgumentCaptor.getValue().getDescription(), is(this.aBook.getDescription()));
 	}
 
 	@Test
 	public void shouldCreateAnotherCopyOfExistingBook() {
-		when(bookRepository.save(any(Book.class))).thenReturn(aBook);
-		bookService.createBook(aBook.getTitle(), aBook.getAuthor(), aBook.getEdition(),
-				aBook.getIsbn(), aBook.getYearOfPublication(), aBook.getDescription());
-		verify(bookRepository, times(1)).save(any(Book.class));
+		when(this.bookRepository.save(any(Book.class))).thenReturn(this.aBook);
+		this.bookService.createBook(this.aBook.getTitle(), this.aBook.getAuthor(), this.aBook.getEdition(),
+				this.aBook.getIsbn(), this.aBook.getYearOfPublication(), this.aBook.getDescription());
+		verify(this.bookRepository, times(1)).save(any(Book.class));
 	}
 
 	@Test
 	public void shouldNotCreateAnotherCopyOfExistingBookWithDifferentTitle() {
-		givenALibraryWith(aBook);
-		bookService.createBook(aBook.getTitle() + "X", aBook.getAuthor(), aBook.getEdition(),
-				aBook.getIsbn(), aBook.getYearOfPublication(), aBook.getDescription());
-		verify(bookRepository, times(0)).save(any(Book.class));
+		this.givenALibraryWith(this.aBook);
+		this.bookService.createBook(this.aBook.getTitle() + "X", this.aBook.getAuthor(), this.aBook.getEdition(),
+				this.aBook.getIsbn(), this.aBook.getYearOfPublication(), this.aBook.getDescription());
+		verify(this.bookRepository, times(0)).save(any(Book.class));
 	}
 
 	@Test
 	public void shouldNotCreateAnotherCopyOfExistingBookWithDifferentAuthor() {
-		givenALibraryWith(aBook);
-		bookService.createBook(aBook.getTitle(), aBook.getAuthor() + "X", aBook.getEdition(),
-				aBook.getIsbn(), aBook.getYearOfPublication(), aBook.getDescription());
-		verify(bookRepository, times(0)).save(any(Book.class));
+		this.givenALibraryWith(this.aBook);
+		this.bookService.createBook(this.aBook.getTitle(), this.aBook.getAuthor() + "X", this.aBook.getEdition(),
+				this.aBook.getIsbn(), this.aBook.getYearOfPublication(), this.aBook.getDescription());
+		verify(this.bookRepository, times(0)).save(any(Book.class));
 	}
 
 	@Test
 	public void shouldFindAllBooks() {
 		List<Book> expectedBooks = new ArrayList<>();
-		expectedBooks.add(aBook);
-		when(bookRepository.findAllByOrderByTitle()).thenReturn(expectedBooks);
-		List<Book> actualBooks = bookService.findAllBooks();
+		expectedBooks.add(this.aBook);
+		when(this.bookRepository.findAllByOrderByTitle()).thenReturn(expectedBooks);
+		List<Book> actualBooks = this.bookService.findAllBooks();
 		assertThat(actualBooks, is(expectedBooks));
 	}
 
 	@Test
 	public void shouldVerifyExistingBooks() {
-		when(bookRepository.findByIsbn(aBook.getIsbn())).thenReturn(Collections.singleton(aBook));
-		Boolean bookExists = bookService.bookExists(aBook.getIsbn());
+		when(this.bookRepository.findByIsbn(this.aBook.getIsbn())).thenReturn(Collections.singleton(this.aBook));
+		Boolean bookExists = this.bookService.bookExists(this.aBook.getIsbn());
 		assertTrue(bookExists);
 	}
 
 	@Test
 	public void shouldVerifyNonexistingBooks() {
-		when(bookRepository.findByIsbn(aBook.getIsbn())).thenReturn(Collections.emptySet());
-		Boolean bookExists = bookService.bookExists(aBook.getIsbn());
+		when(this.bookRepository.findByIsbn(this.aBook.getIsbn())).thenReturn(Collections.emptySet());
+		Boolean bookExists = this.bookService.bookExists(this.aBook.getIsbn());
 		assertThat(bookExists, is(false));
 	}
 
 	@Test
 	public void shouldDeleteAllBooksAndBorrowings() {
-		bookService.deleteAllBooks();
-		verify(bookRepository).deleteAll();
-		verify(borrowingRepository).deleteAll();
+		this.bookService.deleteAllBooks();
+		verify(this.bookRepository).deleteAll();
+		verify(this.borrowingRepository).deleteAll();
 	}
 }

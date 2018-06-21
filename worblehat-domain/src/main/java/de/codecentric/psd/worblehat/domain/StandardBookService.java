@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StandardBookService implements BookService {
 
 	public StandardBookService() {
-
+		// constructor is intentionally left blank
 	}
 
 	@Autowired
