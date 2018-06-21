@@ -1,10 +1,13 @@
 package de.codecentric.psd.worblehat.domain;
 
-import javax.annotation.Nonnull;
-
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Optional;
+
+import javax.annotation.Nonnull;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  * Entity implementation class for Entity: Book
@@ -21,6 +24,7 @@ public class Book implements Serializable {
 	private String title;
 	private String author;
 	private String edition;
+	private String description;
 
 	// TODO: convert String to an ISBN class, that ensures a valid ISBN
 	private String isbn;
@@ -64,23 +68,23 @@ public class Book implements Serializable {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public String getAuthor() {
-		return author;
+		return this.author;
 	}
 
 	public String getEdition() {
-		return edition;
+		return this.edition;
 	}
 
 	public String getIsbn() {
-		return isbn;
+		return this.isbn;
 	}
 
 	public int getYearOfPublication() {
-		return yearOfPublication;
+		return this.yearOfPublication;
 	}
 
 	public void setTitle(String title) {
@@ -89,6 +93,15 @@ public class Book implements Serializable {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	
+	
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setEdition(String edition) {
@@ -104,15 +117,15 @@ public class Book implements Serializable {
 	}
 
     public Borrowing getBorrowing() {
-		return borrowing;
+		return this.borrowing;
 	}
 
 	boolean isSameCopy(@Nonnull Book book) {
-		return getTitle().equals(book.title) && getAuthor().equals(book.author);
+		return this.getTitle().equals(book.title) && this.getAuthor().equals(book.author);
 	}
 
 	public void borrowNowByBorrower(String borrowerEmailAddress) {
-		if (borrowing == null) {
+		if (this.borrowing == null) {
             this.borrowing = new Borrowing(this, borrowerEmailAddress);
         }
 	}
@@ -120,11 +133,11 @@ public class Book implements Serializable {
 	@Override
 	public String toString() {
 		return "Book{" +
-				"title='" + title + '\'' +
-				", author='" + author + '\'' +
-				", edition='" + edition + '\'' +
-				", isbn='" + isbn + '\'' +
-				", yearOfPublication=" + yearOfPublication +
+				"title='" + this.title + '\'' +
+				", author='" + this.author + '\'' +
+				", edition='" + this.edition + '\'' +
+				", isbn='" + this.isbn + '\'' +
+				", yearOfPublication=" + this.yearOfPublication +
 				'}';
 	}
 }
