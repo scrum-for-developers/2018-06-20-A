@@ -8,16 +8,16 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class ReturnAllBooksFormData {
 
-	@NotEmpty(message = "{empty.returnAllBookFormData.emailAddress}") 
+	@NotEmpty(message = "{empty.returnAllBookFormData.emailAddress}")
 	@Email(message = "{notvalid.returnAllBookFormData.emailAddress}")
 	private String emailAddress;
 
 	public String getEmailAddress() {
-		return emailAddress;
+		return this.emailAddress;
 	}
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	public void setEmailAddress(final String emailAddress) {
+		this.emailAddress = emailAddress.trim();
 	}
 
 }
