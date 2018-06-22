@@ -118,7 +118,7 @@ public class Book implements Serializable {
 	}
 
 	boolean isSameCopy(@Nonnull final Book book) {
-		return this.getTitle().equals(book.title) && this.getAuthor().equals(book.author);
+		return this.getTitle().equals(book.title) && this.getAuthor().equals(book.author)&& this.getEdition().equals(book.edition);
 	}
 
 	public void borrowNowByBorrower(final String borrowerEmailAddress) {

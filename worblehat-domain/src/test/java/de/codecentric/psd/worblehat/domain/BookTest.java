@@ -30,11 +30,16 @@ public class BookTest {
         anotherCopy.setTitle("Lord of the Rings");
         assertThat(BOOK.isSameCopy(anotherCopy), is(false));
     }
+    @Test
+    public void shouldReturnFalseWhenEditionisDifferent() {
+        Book anotherCopy = new Book(BOOK.getTitle(), BOOK.getAuthor(), BOOK.getEdition(), BOOK.getIsbn(), BOOK.getYearOfPublication(), "test");
+        anotherCopy.setEdition("3");
+        assertThat(BOOK.isSameCopy(anotherCopy), is(false));
+    }
 
     @Test
-    public void shouldReturnTrueWhenAllButTitleAndAuthorAreDifferent() {
+    public void shouldReturnTrueWhenAllButTitleEditionAndAuthorAreDifferent() {
         Book anotherCopy = new Book(BOOK.getTitle(), BOOK.getAuthor(), BOOK.getEdition(), BOOK.getIsbn(), BOOK.getYearOfPublication(), "test");
-        anotherCopy.setEdition("2000");
         anotherCopy.setIsbn("123456789X");
         anotherCopy.setYearOfPublication(2010);
         assertThat(BOOK.isSameCopy(anotherCopy), is(true));
