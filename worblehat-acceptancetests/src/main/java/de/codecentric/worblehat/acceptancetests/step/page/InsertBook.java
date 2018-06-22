@@ -72,6 +72,7 @@ public class InsertBook {
 		seleniumAdapter.typeIntoField("isbn", isbn);
 		seleniumAdapter.typeIntoField("author", author);
 		seleniumAdapter.typeIntoField("yearOfPublication", year);
+		seleniumAdapter.typeIntoField("description", "balblub");
 	}
 
 
