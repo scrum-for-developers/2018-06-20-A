@@ -50,5 +50,12 @@
 				Insert 13 digit ISBN.
 			</action>
 		</release>
+		
+		<release version="1.4" date="2018-06-22"
+			description="clean data">
+			<action dev="MDD" type="update">
+				ISBN has to be the same for the same edition.
+			</action>
+		</release>
 	</body>
 </document>
