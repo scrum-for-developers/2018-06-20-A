@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>List all borrowed Books - Worblehat Bookmanager</title>
+</head>
+<body>
+	<h1>Book List</h1>
+
+	<form th:object="${returnAllBookFormData}" method="POST">
+		 Email Address:<input id="emailAddress" type="text" th:field="*{emailAddress}" />
+		<span th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}"></span>
+		<br />
+
+		<input type="submit" id="returnAllBooks" value="Borrowed Books" />
+
+	</form>
+	
+	<table class="bookList">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Author</th>
+				<th>Year</th>
+				<th>Edition</th>
+				<th>ISBN</th>
+				<th>Borrower</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="borrowing : ${borrowings}">
+				<td th:text="${borrowing.borrowedBook.title}">Harry Potter</td>
+				<td th:text="${borrowing.borrowedBook.author}">J.K. Rowling</td>
+				<td th:text="${borrowing.borrowedBook.yearOfPublication}">2002</td>
+				<td th:text="${borrowing.borrowedBook.edition}">1st</td>
+				<td th:text="${borrowing.borrowedBook.isbn}">123456</td>
+				<td th:text="${borrowing.borrowerEmailAddress}">someone@codecentric.de</td>
+				<td th:text="${borrowing.borrowedBook.description}">That`s a nice book.</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<hr />
+	<a th:href="@{/}">Back to Home</a>
+	
+	<div th:replace="fragments/footer :: footer"> </div>
+</body>
+</html>
